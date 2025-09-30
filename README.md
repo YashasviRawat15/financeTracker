@@ -49,7 +49,7 @@ This app helps users manage their income & expenses, track balances, and visuali
 
 ![Transaction History Screenshot](./src/assets/screenshots/Transaction%20History.png)
 
-Screenshot: Edit Transaction*  
+*Screenshot: Edit Transaction*
 
 ![Edit Transaction Screenshot](./src/assets/screenshots/Edit%20Transaction.png)
 
