@@ -22,12 +22,13 @@ This app helps users manage their income & expenses, track balances, and visuali
   - Description
   - Amount
   - Type (**Income** / **Expense**)
-  - Category (Food, Transport, Shopping, Bills, Other)
+  - Category (Food, Transport, Salary etc.)
   - Date  
 - **Validation**: No field can be left blank.  
 - Success & error notifications with **Toast**.  
 
 *Screenshot: Add Transaction*  
+
 ![Add Transaction Screenshot](./src/assets/screenshots/Add%20Transaction.png)
 
 ---
@@ -37,16 +38,18 @@ This app helps users manage their income & expenses, track balances, and visuali
 - **Search** by description, category, or type.  
 - **Sorting** by amount & date.  
 - **Pagination** for easy navigation.  
-- **Edit transaction** (with validation and category dropdown).  
+- **Edit transaction**  
 - **Delete single transaction**.  
 - **Clear all transactions**.  
 - Balance always displayed at the bottom.  
 - All data is **persisted in localStorage**.
 
-📷 *Screenshot: Transaction History*  
+*Screenshot: Transaction History*  
+
 ![Transaction History Screenshot](./src/assets/screenshots/Transaction%20History.png)
 
-📷 *Screenshot: Edit Transaction*  
+Screenshot: Edit Transaction*  
+
 ![Edit Transaction Screenshot](./src/assets/screenshots/Edit%20Transaction.png)
 
 ---
@@ -56,6 +59,7 @@ This app helps users manage their income & expenses, track balances, and visuali
 - Positioned neatly at the bottom-right.  
 
 *Screenshot: Toast Notification*  
+
 ![Toast Screenshot](./src/assets/screenshots/Toast.png)
 
 ---
@@ -75,18 +79,22 @@ This app helps users manage their income & expenses, track balances, and visuali
 ```bash
 git clone https://github.com/your-username/finance-tracker.git
 cd finance-tracker
+```
 
 ### Install dependencies
 ```bash
 npm install
+```
 
 ### Run the development server
 ```bash
 npm run dev
+```
 
 ### Build for production
 ```bash
 npm run build
+```
 
 ## Author
 
