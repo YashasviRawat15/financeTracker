@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Load from localStorage (if available)
 const loadTransactions = () => {
   try {
     const saved = localStorage.getItem("transactions");
@@ -40,9 +39,16 @@ const transactionsSlice = createSlice({
       saveTransactions([]);
       return [];
     },
+    updateTransaction: (state, action) => {
+      const index = state.findIndex((t) => t.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+        saveTransactions(state);
+      }
+    },    
   },
 });
 
-export const { addTransaction, deleteTransaction, clearTransactions } =
+export const { addTransaction, deleteTransaction, clearTransactions, updateTransaction } =
   transactionsSlice.actions;
 export default transactionsSlice.reducer;

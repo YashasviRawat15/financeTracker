@@ -16,6 +16,5 @@ export const loadState = () => {
         localStorage.setItem('transactions_state', serialized)
     } catch (e) {
         console.log(e);
-    // ignore
     }
     }

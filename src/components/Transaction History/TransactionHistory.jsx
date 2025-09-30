@@ -3,12 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   TableFooter, Paper, Button, IconButton, TableSortLabel, Typography,
-  TextField, Pagination
+  TextField, Pagination, Dialog, DialogActions, DialogContent,
+  DialogTitle, MenuItem
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteTransaction, clearTransactions } from "../../features/transactions/transactionsSlice";
+import EditIcon from "@mui/icons-material/Edit";
+import { deleteTransaction, clearTransactions, updateTransaction } from "../../features/transactions/transactionsSlice";
 import "./TransactionHistory.css";
 import Toast from "../../components/Toast/Toast";
+
+const categories = ['Groceries','Rent','Salary','Utilities','Dining out','Transport','Other']
 
 const TransactionHistory = () => {
   const transactions = useSelector((state) => state.transactions);
@@ -19,6 +23,9 @@ const TransactionHistory = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [toast, setToast] = useState({ open: false, message: "", severity: "info" });
+
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
 
   const rowsPerPage = 5;
 
@@ -41,6 +48,41 @@ const TransactionHistory = () => {
     dispatch(clearTransactions());
     setToast({ open: true, message: "All transactions cleared", severity: "warning" });
   };
+
+  const handleEditClick = (transaction) => {
+    setEditData({ ...transaction });
+    setEditDialogOpen(true);
+  };
+
+  const handleEditChange = (e) => {
+    setEditData({ ...editData, [e.target.name]: e.target.value });
+  };
+
+  const handleEditSave = () => {
+    if (
+      !editData.description.trim() ||
+      !editData.amount ||
+      !editData.type ||
+      !editData.category ||
+      !editData.date
+    ) {
+      setToast({
+        open: true,
+        message: "All fields are required",
+        severity: "error",
+      });
+      return;
+    }
+  
+    dispatch(updateTransaction(editData));
+    setToast({
+      open: true,
+      message: "Transaction updated successfully",
+      severity: "success",
+    });
+    setEditDialogOpen(false);
+  };
+  
 
   const filteredTransactions = transactions.filter(
     (t) =>
@@ -144,6 +186,12 @@ const TransactionHistory = () => {
                   </TableCell>
                   <TableCell>
                     <IconButton
+                      color="primary"
+                      onClick={() => handleEditClick(transaction)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
                       color="error"
                       onClick={() => handleDelete(transaction.id)}
                     >
@@ -190,7 +238,72 @@ const TransactionHistory = () => {
         className="pagination"
       />
 
-      {/* ✅ Toast Notification */}
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+        <DialogTitle>Edit Transaction</DialogTitle>
+        <DialogContent>
+          {editData && (
+            <>
+              <TextField
+                margin="dense"
+                label="Description"
+                name="description"
+                fullWidth
+                value={editData.description}
+                onChange={handleEditChange}
+              />
+              <TextField
+                margin="dense"
+                label="Amount"
+                name="amount"
+                type="number"
+                fullWidth
+                value={editData.amount}
+                onChange={handleEditChange}
+              />
+              <TextField
+                margin="dense"
+                select
+                label="Type"
+                name="type"
+                fullWidth
+                value={editData.type}
+                onChange={handleEditChange}
+              >
+                <MenuItem value="Income">Income</MenuItem>
+                <MenuItem value="Expense">Expense</MenuItem>
+              </TextField>
+              <TextField
+                margin="dense"
+                select
+                label="Category"
+                name="category"
+                fullWidth
+                value={editData.category}
+                onChange={handleEditChange}
+              >
+                {categories.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+              </TextField>
+              <TextField
+                margin="dense"
+                label="Date"
+                name="date"
+                type="date"
+                fullWidth
+                value={editData.date.split("T")[0]}
+                onChange={handleEditChange}
+                InputLabelProps={{ shrink: true }}
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleEditSave} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Toast open={toast.open} onClose={() => setToast({ ...toast, open: false })} message={toast.message} severity={toast.severity} />
     </div>
   );

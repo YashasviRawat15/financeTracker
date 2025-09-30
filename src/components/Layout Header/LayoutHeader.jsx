@@ -72,7 +72,6 @@ export default function LayoutHeader() {
         </Toolbar>
       </AppBar>
 
-      {/* Full-width dropdown for mobile */}
       {isMobile && open && (
         <Box
           sx={{

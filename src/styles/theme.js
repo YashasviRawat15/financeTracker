@@ -1,7 +1,5 @@
-// theme.js
 import { createTheme, keyframes } from "@mui/material/styles";
 
-// Define a fade-up animation for headings
 const fadeUp = keyframes`
   0% {
     opacity: 0;
@@ -16,22 +14,22 @@ const fadeUp = keyframes`
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#167D7F", // Teal Green
+      main: "#167D7F",
       contrastText: "#FFFFFF",
     },
     secondary: {
-      main: "#98D7C2", // Spearmint
+      main: "#98D7C2",
       contrastText: "#064E3B",
     },
     background: {
-      default: "#EEEDE7", // Ivory background
-      paper: "#FFFFFF",   // Cards/Modals
+      default: "#EEEDE7", 
+      paper: "#FFFFFF", 
     },
     success: {
-      main: "#29A0B1", // Teal highlight
+      main: "#29A0B1", 
     },
     error: {
-      main: "#DC2626", // Red for expenses
+      main: "#DC2626", 
     },
     text: {
       primary: "#167D7F",
@@ -117,7 +115,7 @@ const theme = createTheme({
     },
     MuiTypography: {
       defaultProps: {
-        gutterBottom: true, // Adds bottom margin to all Typography by default
+        gutterBottom: true,
       },
     },
     MuiCard: {
@@ -153,9 +151,6 @@ const theme = createTheme({
         root: {
           minHeight: "48px",
         },
-        indicator: {
-          display: "none", // remove default underline
-        },
       },
     },
     MuiTab: {
@@ -163,10 +158,10 @@ const theme = createTheme({
         root: {
           fontWeight: 500,
           fontSize: "1rem",
-          color: "#EEEDE7", // unselected tabs → Ivory
+          color: "#EEEDE7", 
           textTransform: "none",
           "&.Mui-selected": {
-            color: "#29A0B1", // selected tab → Teal
+            color: "#29A0B1",
             fontWeight: 600,
           },
         },

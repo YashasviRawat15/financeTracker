@@ -24,7 +24,6 @@ const Dashboard = () => {
   const expenses = transactions.filter((t) => t.type === "Expense");
   const income = transactions.filter((t) => t.type === "Income");
 
-  // Group expenses by category
   const expenseByCategory = expenses.reduce((acc, curr) => {
     acc[curr.category] = (acc[curr.category] || 0) + Number(curr.amount);
     return acc;
@@ -34,7 +33,6 @@ const Dashboard = () => {
     value,
   }));
 
-  // Group by month
   const months = [
     "Jan","Feb","Mar","Apr","May","Jun",
     "Jul","Aug","Sep","Oct","Nov","Dec"
@@ -55,7 +53,7 @@ const Dashboard = () => {
       Financial Snapshot
       </Typography>
       <div className="dashboard-container">
-        {/* Pie Chart */}
+
         <div className="chart-box">
           <h3 className="chart-title">Expenses by Category</h3>
           <ResponsiveContainer width="100%" height={400}>
@@ -84,7 +82,6 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Bar Chart */}
         <div className="chart-box">
           <h3 className="chart-title">Monthly Income vs Expenses</h3>
           <ResponsiveContainer width="100%" height={400}>
