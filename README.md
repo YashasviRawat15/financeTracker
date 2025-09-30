@@ -77,7 +77,7 @@ Screenshot: Edit Transaction*
 
 ### Clone the repository
 ```bash
-git clone https://github.com/your-username/finance-tracker.git
+git clone https://github.com/YashasviRawat15/financeTracker.git
 cd finance-tracker
 ```
 
@@ -98,4 +98,4 @@ npm run build
 
 ## Author
 
-## Yashasvi Rawat
+Yashasvi Rawat
