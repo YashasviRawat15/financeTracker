@@ -1,10 +1,10 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Container from '@mui/material/Container'
-import LayoutHeader from './components/LayoutHeader'
-import Dashboard from './components/Dashboard'
-import AddTransaction from './components/AddTransaction'
-import TransactionHistory from './components/TransactionHistory'
+import LayoutHeader from './components/Layout Header/LayoutHeader'
+import Dashboard from './components/Dashboard/Dashboard'
+import AddTransaction from './components/Add Transactions/AddTransaction'
+import TransactionHistory from './components/Transaction History/TransactionHistory'
 
 
 export default function App() {

@@ -13,6 +13,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { Typography } from '@mui/material'
+import "./Dashboard.css";
 
 const COLORS = ["#0088FE", "#FF8042", "#FFBB28", "#00C49F", "#FF6384"];
 
@@ -48,13 +50,15 @@ const Dashboard = () => {
   });
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Dashboard</h2>
-      <div style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
+    <div className="dashboard-wrapper">
+      <Typography variant="h3" gutterBottom>
+      Financial Snapshot
+      </Typography>
+      <div className="dashboard-container">
         {/* Pie Chart */}
-        <div style={{ width: "45%" }}>
-          <h3 style={{ textAlign: "center" }}>Expenses by Category</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="chart-box">
+          <h3 className="chart-title">Expenses by Category</h3>
+          <ResponsiveContainer width="100%" height={400}>
             <PieChart>
               <Pie
                 data={pieData.length ? pieData : [{ name: "No Expenses", value: 1 }]}
@@ -76,25 +80,14 @@ const Dashboard = () => {
               </Pie>
               <Tooltip />
               <Legend />
-              {!pieData.length && (
-                <text
-                  x="50%"
-                  y="50%"
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  style={{ fill: "#666" }}
-                >
-                  No expenses yet
-                </text>
-              )}
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         {/* Bar Chart */}
-        <div style={{ width: "45%" }}>
-          <h3 style={{ textAlign: "center" }}>Monthly Income vs Expenses</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="chart-box">
+          <h3 className="chart-title">Monthly Income vs Expenses</h3>
+          <ResponsiveContainer width="100%" height={400}>
             <BarChart data={barData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
@@ -106,6 +99,7 @@ const Dashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+
       </div>
     </div>
   );
