@@ -9,8 +9,8 @@ This app helps users manage their income & expenses, track balances, and visuali
 
 ### Dashboard
 - Overview of **income, expenses**.
-- **Pie chart** showing income vs expenses distribution.
-- **Line chart / bar chart** for spending trends.
+- **Pie chart** showing Expenses by category.
+- **Bar chart** for Monthly Income v/s Expenses.
 
 *Screenshot: Dashboard*  
 
