@@ -13,6 +13,7 @@ This app helps users manage their income & expenses, track balances, and visuali
 - **Line chart / bar chart** for spending trends.
 
 *Screenshot: Dashboard*  
+
 ![Dashboard Screenshot](./src/assets/screenshots/Dashboard.png)
 
 ---
@@ -56,7 +57,7 @@ Screenshot: Edit Transaction*
 
 ### Toast Notifications
 - Success, error, and warning messages shown with **Material-UI Toasts**.  
-- Positioned neatly at the bottom-right.  
+- Positioned neatly at the top-center.  
 
 *Screenshot: Toast Notification*  
 
