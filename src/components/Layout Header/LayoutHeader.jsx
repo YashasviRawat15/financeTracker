@@ -19,18 +19,12 @@ export default function LayoutHeader() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const pathToIndex = {
-    '/dashboard': 0,
-    '/add': 1,
-    '/history': 2,
-  }
-
-  const index = pathToIndex[location.pathname] ?? 0
+  const paths = ['/dashboard', '/add', '/history']
+  const index = paths.indexOf(location.pathname) === -1 ? 0 : paths.indexOf(location.pathname)
   const [open, setOpen] = useState(false)
 
   const handleChange = (e, newValue) => {
-    const map = ['/dashboard', '/add', '/history']
-    navigate(map[newValue])
+    navigate(paths[newValue])
   }
 
   const handleMenuClick = (path) => {
@@ -82,15 +76,9 @@ export default function LayoutHeader() {
             flexDirection: 'column',
           }}
         >
-          <Button onClick={() => handleMenuClick('/dashboard')}>
-            Dashboard
-          </Button>
-          <Button onClick={() => handleMenuClick('/add')}>
-            Add Transaction
-          </Button>
-          <Button onClick={() => handleMenuClick('/history')}>
-            Transaction History
-          </Button>
+          <Button onClick={() => handleMenuClick('/dashboard')}>Dashboard</Button>
+          <Button onClick={() => handleMenuClick('/add')}>Add Transaction</Button>
+          <Button onClick={() => handleMenuClick('/history')}>Transaction History</Button>
         </Box>
       )}
     </>
