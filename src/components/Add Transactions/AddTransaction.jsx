@@ -16,8 +16,21 @@ export default function AddTransaction() {
   const dispatch = useDispatch()
   const [form, setForm] = useState({ description: '', amount: '', type: 'Expense', category: 'Other', date: '' })
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' })
+  const [errors, setErrors] = useState({});
 
-  const onChange = (e) => setForm(prev => ({...prev, [e.target.name]: e.target.value }))
+    const onChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'amount') {
+      if (value === '' || Number(value) <= 0) {
+        setErrors(prev => ({ ...prev, amount: 'Amount must be greater than 0' }));
+      } else {
+        setErrors(prev => ({ ...prev, amount: '' }));
+      }
+    }
+  };
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -25,6 +38,22 @@ export default function AddTransaction() {
       setToast({ open: true, message: 'Please fill all the fields', severity: 'error' })
       return
     }
+
+    if (Number(form.amount) <= 0) {
+      setErrors(prev => ({ ...prev, amount: 'Amount must be greater than 0' }));
+      setToast({ open: true, message: 'Amount must be greater than 0', severity: 'error' });
+      return;
+    }
+
+    const year = form.date.slice(0,4);
+    const yearNum =  Number(year)
+    if(yearNum < 2021 || yearNum > 2025){
+      console.log("Wrong date.")
+      setToast({ open: true, message: 'Date must be between 2021 and 2025.', severity: 'error' })
+      return
+    }
+    console.log(typeof(form.date))
+    console.log((form.date))
     dispatch(addTransaction(form))
     setForm({ description: '', amount: '', type: 'Expense', category: 'Other', date: '' })
     setToast({ open: true, message: 'Transaction added successfully!', severity: 'success' })
@@ -42,7 +71,7 @@ export default function AddTransaction() {
               <TextField fullWidth label="Description" name="description" value={form.description} onChange={onChange} />
             </Grid>
             <Grid item xs={12} md={3}>
-              <TextField fullWidth label="Amount" name="amount" type="number" value={form.amount} onChange={onChange} />
+              <TextField fullWidth label="Amount" name="amount" type="number" value={form.amount} onChange={onChange} error={!!errors.amount} helperText={errors.amount || ''} />
             </Grid>
             <Grid item xs={6} md={3}>
               <TextField select fullWidth label="Type" name="type" value={form.type} onChange={onChange} >

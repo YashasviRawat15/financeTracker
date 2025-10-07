@@ -4,15 +4,27 @@ import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   TableFooter, Paper, Button, IconButton, TableSortLabel, Typography,
   TextField, Pagination, Dialog, DialogActions, DialogContent,
-  DialogTitle, MenuItem
+  DialogTitle, MenuItem, Divider
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { deleteTransaction, clearTransactions, updateTransaction } from "../../features/transactions/transactionsSlice";
+import {
+  deleteTransaction,
+  clearTransactions,
+  updateTransaction
+} from "../../features/transactions/transactionsSlice";
 import "./TransactionHistory.css";
 import Toast from "../../components/Toast/Toast";
 
-const categories = ['Groceries','Rent','Salary','Utilities','Dining out','Transport','Other']
+const categories = [
+  "Groceries",
+  "Rent",
+  "Salary",
+  "Utilities",
+  "Dining out",
+  "Transport",
+  "Other"
+];
 
 const TransactionHistory = () => {
   const transactions = useSelector((state) => state.transactions);
@@ -23,10 +35,11 @@ const TransactionHistory = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [toast, setToast] = useState({ open: false, message: "", severity: "info" });
-
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editData, setEditData] = useState(null);
-
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
+  const [transactionToDelete, setTransactionToDelete] = useState(null);
   const rowsPerPage = 5;
 
   const handleSort = (property) => {
@@ -35,18 +48,30 @@ const TransactionHistory = () => {
     setOrderBy(property);
   };
 
-  const handleDelete = (id) => {
-    dispatch(deleteTransaction(id));
-    setToast({ open: true, message: "Transaction deleted", severity: "warning" });
+  const handleDeleteClick = (id) => {
+    setTransactionToDelete(id);
+    setDeleteConfirmOpen(true);
   };
 
-  const handleClearAll = () => {
+  const confirmDelete = () => {
+    dispatch(deleteTransaction(transactionToDelete));
+    setToast({ open: true, message: "Transaction deleted", severity: "warning" });
+    setDeleteConfirmOpen(false);
+    setTransactionToDelete(null);
+  };
+
+  const handleClearAllClick = () => {
     if (!transactions.length) {
       setToast({ open: true, message: "No transactions to delete", severity: "error" });
       return;
     }
+    setClearConfirmOpen(true);
+  };
+
+  const confirmClearAll = () => {
     dispatch(clearTransactions());
     setToast({ open: true, message: "All transactions cleared", severity: "warning" });
+    setClearConfirmOpen(false);
   };
 
   const handleEditClick = (transaction) => {
@@ -69,20 +94,18 @@ const TransactionHistory = () => {
       setToast({
         open: true,
         message: "All fields are required",
-        severity: "error",
+        severity: "error"
       });
       return;
     }
-  
     dispatch(updateTransaction(editData));
     setToast({
       open: true,
       message: "Transaction updated successfully",
-      severity: "success",
+      severity: "success"
     });
     setEditDialogOpen(false);
   };
-  
 
   const filteredTransactions = transactions.filter(
     (t) =>
@@ -133,7 +156,7 @@ const TransactionHistory = () => {
           variant="outlined"
           color="error"
           className="clear-button"
-          onClick={handleClearAll}
+          onClick={handleClearAllClick}
         >
           Clear All
         </Button>
@@ -176,7 +199,7 @@ const TransactionHistory = () => {
                   <TableCell>
                     {Number(transaction.amount).toLocaleString("en-IN", {
                       style: "currency",
-                      currency: "INR",
+                      currency: "INR"
                     })}
                   </TableCell>
                   <TableCell>{transaction.type}</TableCell>
@@ -193,7 +216,7 @@ const TransactionHistory = () => {
                     </IconButton>
                     <IconButton
                       color="error"
-                      onClick={() => handleDelete(transaction.id)}
+                      onClick={() => handleDeleteClick(transaction.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -212,17 +235,25 @@ const TransactionHistory = () => {
           <TableFooter>
             <TableRow>
               <TableCell colSpan={6} align="center">
-                <Typography variant="h6" component="span" sx={{ fontWeight: "bold", color: "black" }}>
+                <Typography
+                  variant="h6"
+                  component="span"
+                  sx={{ fontWeight: "bold", color: "black" }}
+                >
                   Balance:{" "}
                 </Typography>
                 <Typography
                   variant="h6"
                   component="span"
-                  sx={{ color: balance >= 0 ? "#167D7F" : "#dc2626", fontWeight: "bold", marginLeft: 1 }}
+                  sx={{
+                    color: balance >= 0 ? "#167D7F" : "#dc2626",
+                    fontWeight: "bold",
+                    marginLeft: 1
+                  }}
                 >
                   {balance.toLocaleString("en-IN", {
                     style: "currency",
-                    currency: "INR",
+                    currency: "INR"
                   })}
                 </Typography>
               </TableCell>
@@ -281,7 +312,11 @@ const TransactionHistory = () => {
                 value={editData.category}
                 onChange={handleEditChange}
               >
-                {categories.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
+                {categories.map((c) => (
+                  <MenuItem key={c} value={c}>
+                    {c}
+                  </MenuItem>
+                ))}
               </TextField>
               <TextField
                 margin="dense"
@@ -304,7 +339,40 @@ const TransactionHistory = () => {
         </DialogActions>
       </Dialog>
 
-      <Toast open={toast.open} onClose={() => setToast({ ...toast, open: false })} message={toast.message} severity={toast.severity} />
+      <Dialog open={deleteConfirmOpen} onClose={() => setDeleteConfirmOpen(false)}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <Divider />
+        <DialogContent>
+          <Typography>Are you sure you want to delete this transaction?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={confirmDelete} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={clearConfirmOpen} onClose={() => setClearConfirmOpen(false)}>
+        <DialogTitle>Confirm Clear All</DialogTitle>
+        <Divider />
+        <DialogContent>
+          <Typography>Are you sure you want to clear all transactions?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setClearConfirmOpen(false)}>Cancel</Button>
+          <Button onClick={confirmClearAll} color="error" variant="contained">
+            Clear All
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Toast
+        open={toast.open}
+        onClose={() => setToast({ ...toast, open: false })}
+        message={toast.message}
+        severity={toast.severity}
+      />
     </div>
   );
 };
